@@ -3455,7 +3455,7 @@
                                     <table>
                                         <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
                                         <tbody id="encTierBody">
-                                            <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                            <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="100" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="30" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
                                         </tbody>
                                     </table>
                                     <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addEncTierRow()">+ 添加阶梯规则</button>
@@ -3781,7 +3781,7 @@ function doFullCalculation(cfg) {
             id: m.id, name: m.name, author: m.author, authorId: m.authorId,
             track: m.track, isEncourage: isEncourage,
             rawValidUsers: m.validUsers,
-            tierLabel: m.validUsers < minU ? '不激励' : (m.validUsers >= (tiers[tiers.length-1]?.users || 99999)) ? '最高档' : '阶梯'),
+            tierLabel: m.validUsers < minU ? '\u4e0d\u6fc0\u52b1' : (m.validUsers >= ((tiers.length > 0 ? tiers[tiers.length-1].users : 0) || 99999) ? '\u6700\u9ad8\u6863' : '\u9636\u68af'),
             bonus: Math.round(bonus)
         });
         totalBonus += bonus;
@@ -4010,7 +4010,7 @@ window.readCurrentConfig = function() {
         var b = r.querySelector('[enc-tier-bonus]');
         if(u && b && u.value!==''){ currentConfig.encTiers.push({users:parseInt(u.value)||0, bonus:parseInt(b.value)||0}); }
     });
-    if(currentConfig.encTiers.length===0){ currentConfig.encTiers = [{users:500,bonus:150}]; }
+    if(currentConfig.encTiers.length===0){ currentConfig.encTiers = [{users:100,bonus:30}]; }
     // 非鼓励赛道 - 动态读取阶梯行
     currentConfig.norMapCap = parseInt(document.getElementById('cfg_nor_map_cap').value) || 1000;
     currentConfig.norMinUsers = parseInt(document.getElementById('cfg_nor_min_users').value) || 100;
@@ -4021,7 +4021,7 @@ window.readCurrentConfig = function() {
         var b = r.querySelector('[nor-tier-bonus]');
         if(u && b && u.value!==''){ currentConfig.norTiers.push({users:parseInt(u.value)||0, bonus:parseInt(b.value)||0}); }
     });
-    if(currentConfig.norTiers.length===0){ currentConfig.norTiers = [{users:500,bonus:80}]; }
+    if(currentConfig.norTiers.length===0){ currentConfig.norTiers = [{users:100,bonus:20}]; }
 };
 
 window.resetFormulaConfig = function() {
@@ -4032,12 +4032,12 @@ window.resetFormulaConfig = function() {
     document.getElementById('cfg_enc_map_cap').value = 2000;
     document.getElementById('cfg_enc_min_users').value = 100;
     var encBody = document.getElementById('encTierBody');
-    encBody.innerHTML = '<tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
+    encBody.innerHTML = '<tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="100" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="30" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
     // 非鼓励赛道 - 重置为默认1行
     document.getElementById('cfg_nor_map_cap').value = 1000;
     document.getElementById('cfg_nor_min_users').value = 100;
     var norBody = document.getElementById('norTierBody');
-    norBody.innerHTML = '<tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="80" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
+    norBody.innerHTML = '<tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="100" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="20" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
 };
 window.openFormulaConfig = function() {
     document.querySelector('.calc-main-grid .calc-panel:last-child').scrollIntoView({behavior:'smooth',block:'start'});
