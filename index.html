@@ -2919,6 +2919,24 @@
                 </div>
             </div>
 
+                <!-- 按人可视化图表 -->
+                <div class="viz-container" style="margin-top:24px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e5e5ea;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+                        <span style="font-size:15px;font-weight:700;color:#1d1d1f;">📊 用户奖金分布与趋势</span>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn-viz active" id="btnVizUserBar" onclick="switchVizUser('bar')" style="background:#0071e3;color:#fff;border:none;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;font-weight:600;">柱状图</button>
+                            <button class="btn-viz" id="btnVizUserLine" onclick="switchVizUser('line')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">趋势线</button>
+                            <button class="btn-viz" id="btnVizUserPie" onclick="switchVizUser('pie')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">占比饼图</button>
+                        </div>
+                    </div>
+                    <div style="position:relative;width:100%;height:340px;background:#fafafa;border-radius:8px;">
+                        <canvas id="vizUserChart" style="width:100%;height:100%;"></canvas>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:20px;" id="vizUserCards">
+                    </div>
+                </div>
+
+
             <!-- 按图查看视图 -->
             <div id="bonus-by-map" class="bonus-tab-content" style="display: none;">
                 <div class="table-container">
@@ -3020,7 +3038,37 @@
                 </div>
             </div>
 
-            <!-- 按激励计划查看视图 -->
+            <!-- 按
+
+                <!-- 按地图可视化图表 -->
+                <div class="viz-container" style="margin-top:24px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e5e5ea;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+                        <span style="font-size:15px;font-weight:700;color:#1d1d1f;">🗺️ 地图奖金与赛道分析</span>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn-viz active" id="btnVizMapBar" onclick="switchVizMap('bar')" style="background:#0071e3;color:#fff;border:none;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;font-weight:600;">柱状图</button>
+                            <button class="btn-viz" id="btnVizMapTrack" onclick="switchVizMap('track')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">赛道对比</button>
+                            <button class="btn-viz" id="btnVizMapScatter" onclick="switchVizMap('scatter')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">游玩vs奖金</button>
+                        </div>
+                    </div>
+                    <div style="position:relative;width:100%;height:360px;background:#fafafa;border-radius:8px;">
+                        <canvas id="vizMapChart" style="width:100%;height:100%;"></canvas>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px;" id="vizMapStatCards">
+                        <div style="padding:20px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:10px;border-left:4px solid #34c759;">
+                            <div style="font-size:13px;color:#2e7d32;margin-bottom:6px;">鼓励赛道地图</div
+>
+                            <div style="font-size:26px;font-weight:800;color:#1b5e20;">4 张</div>
+                            <div style="font-size:13px;color:#388e3c;margin-top:4px;">总奖金 ¥6,500 | 占比 86.7%</div>
+                        </div>
+                        <div style="padding:20px;background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-radius:10px;border-left:4px solid #007aff;">
+                            <div style="font-size:13px;color:#1565c0;margin-bottom:6px;">非鼓励赛道地图</div
+>
+                            <div style="font-size:26px;font-weight:800;color:#0d47a1;">1 张</div>
+                            <div style="font-size:13px;color:#1976d2;margin-top:4px;">总奖金 ¥1,500 | 占比 13.3%</div>
+                        </div>
+                    </div>
+</div>
+激励计划查看视图 -->
             <div id="bonus-by-plan" class="bonus-tab-content" style="display: none;">
                 <div class="stats-grid" style="margin-bottom: 25px;">
                     <div class="stat-card">
@@ -3491,16 +3539,13 @@
 
                                 <div class="cfg-staircase-table">
                                     <table>
-                                        <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th></tr></thead>
-                                        <tbody>
-                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier1_users" value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier1_bonus" value="80" step="10" min="0"></td></tr>
-                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier2_users" value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier2_bonus" value="150" step="10" min="0"></td></tr>
-                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier3_users" value="2000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier3_bonus" value="280" step="10" min="0"></td></tr>
-                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier4_users" value="3500" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier4_bonus" value="450" step="10" min="0"></td></tr>
-                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier5_users" value="5000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier5_bonus" value="650" step="10" min="0"></td></tr>
-                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier6_users" value="8000" step="100" min="0"></td><td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier6_bonus" value="900" step="10" min="0"></td></tr>
+                                        <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
+                                        
+                                        <tbody id="norTierBody">
+                                            <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="100" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="20" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
                                         </tbody>
-                                    </table>
+                                    </table
+                                    <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addNorTierRow()">+ 添加阶梯规则</button>>
                                 </div>
 
                                 <div class="cfg-form-row">
@@ -3559,6 +3604,41 @@
                         </table>
                     </div>
                 </div>
+                <!-- 按计划可视化图表 -->
+                <div class="viz-container" style="margin-top:24px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e5e5ea;margin-bottom:30px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+                        <span style="font-size:15px;font-weight:700;color:#1d1d1f;">📋 计划发放趋势与效果</span>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn-viz active" id="btnVizPlanTrend" onclick="switchVizPlan('trend')" style="background:#0071e3;color:#fff;border:none;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;font-weight:600;">趋势图</button>
+                            <button class="btn-viz" id="btnVizPlanCompare" onclick="switchVizPlan('compare')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">期数对比</button>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:20px;">
+                        <div style="position:relative;width:100%;height:320px;background:#fafafa;border-radius:8px;">
+                            <canvas id="vizPlanChart" style="width:100%;height:100%;"></canvas
+>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:12px;">
+                            <div style="padding:16px;background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-radius:10px;border-left:4px solid #ff9500;">
+                                <div style="font-size:12px;color:#e65100;">进行中计划</div>
+                                <div style="font-size:22px;font-weight:800;color:#e65100;">¥89,000</div
+>
+                                <div style="font-size:12px;color:#ef6c00;margin-top:4px;">2026-04 | 210张地图 | 86位创者</div
+>
+                            </div
+>
+                            <div style="padding:16px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:10px;border-left:4px solid #34c759;">
+                                <div style="font-size:12px;color:#2e7d32;">dfb结算计划</div>
+                                <div style="font-size:22px;font-weight:800;color:#2e7d32;">3 期</div
+>
+                                <div style="font-size:12px;color:#388e3c;margin-top:4px;">总额 ¥179,500 | 均值 ¥59,833
+>
+                            </div
+>
+                        </div
+>
+                
+</div>
 
             </div><!-- /calc-page -->
 
@@ -3635,6 +3715,14 @@
     </main>
 
 <!-- 奖金计算引擎 -->
+<!-- 可视化组件样式 -->
+    <style>
+        .btn-viz { transition: all .2s ease; border-radius: 6px; }
+        .btn-viz:hover { opacity: .85; transform: translateY(-1px); }
+        .viz-container { animation: fadeInUp .3s ease; }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+    </style>
+
 <script>
 // 调试标记
 window._calcScriptLoaded = false;
@@ -5900,6 +5988,427 @@ window._calcInitialized = false;
             document.getElementById('trackStatusBadge').className = 'badge badge-warning';
             document.getElementById('submitTrackReviewBtn').style.display = 'inline-block';
         }
-    </script>
+    
+
+        // ========== 奖金记录数据可视化引擎 ==========
+
+        var vizUserType = 'bar';
+        var vizMapType = 'bar';
+        var vizPlanType = 'trend';
+
+        // 可视化数据集
+        var VIZ_USER_DATA = [
+            { id:'user100', name:'小明', level:"黄金", mapCount:8, total:9200, periods:4, maxSingle:2000, lastDate:'2026-04-16' },
+            { id:'user101', name:'小红', level:"白银", mapCount:6, total:6850, periods:3, maxSingle:1800, lastDate:'2026-04-16' },
+            { id:'user102', name:'小张', level:"白银", mapCount:5, total:5400, periods:3, maxSingle:1800, lastDate:'2026-02-16' },
+            { id:'user103', name:'小赵', level:"青铜", mapCount:3, total:3100, periods:2, maxSingle:1200, lastDate:'2026-03-16' },
+            { id:'user104', name:'小陈', level:"白银", mapCount:2, total:2300, periods:2, maxSingle:1500, lastDate:'2026-05-16' }
+        ];
+
+        var VIZ_MAP_DATA = [
+            { id:'MAP001', name:'冒险关卡001', author:'小明', track:'enc', plays:52000, bonus:2000 },
+            { id:'MAP002', name:'解谜迷宫', author:'小红', track:'enc', plays:38000, bonus:1500 },
+            { id:'MAP010', name:'极速跑酷', author:'小明', track:'enc', plays:28000, bonus:1200 },
+            { id:'MAP020', name:'仙境探险', author:'小明', track:'enc', plays:45000, bonus:1800 },
+            { id:'MAP030', name:'创意工坊', author:'小陈', track:'nor', plays:30000, bonus:1500 }
+        ];
+
+        var VIZ_PLAN_DATA = [
+            { month:'2026-01', label:'1月计划', maps:120, users:45, amount:39000, status:2 },
+            { month:'2026-02', label:'2月计划', maps:148, users:58, amount:62000, status:2 },
+            { month:'2026-03', label:'3月计划', maps:185, users:72, amount:78500, status:2 },
+            { month:'2026-04', label:'4月计划', maps:210, users:86, amount:89000, status:1 }
+        ];
+
+        // --- 按人可视化 ---
+        function switchVizUser(type) {
+            vizUserType = type;
+            // update buttons
+            ['Bar','Line','Pie'].forEach(function(t){
+                var btn = document.getElementById('btnVizUser'+t);
+                if(btn) {
+                    if(t.toLowerCase()===type){ btn.style.background='#0071e3';btn.style.color='#fff';btn.style.fontWeight='600'; }
+                    else{ btn.style.background='#f5f5f7';btn.style.color='#1d1d1f';btn.style.fontWeight='normal'; }
+                }
+            });
+            drawVizUserChart(type);
+            renderVizUserCards();
+        }
+
+        function drawVizUserChart(type) {
+            var canvas = document.getElementById('vizUserChart');
+            if(!canvas) return;
+            var parent = canvas.parentElement;
+            if(!parent || parent.offsetWidth===0) return;
+            var ctx = canvas.getContext('2d');
+            var dpr = window.devicePixelRatio||1;
+            var rect = parent.getBoundingClientRect();
+            canvas.width = rect.width*dpr; canvas.height=340*dpr;
+            canvas.style.width=rect.width+'px'; canvas.style.height='340px';
+            ctx.scale(dpr,dpr);
+            var W=rect.width, H=340;
+            ctx.clearRect(0,0,W,H);
+
+            var data = VIZ_USER_DATA;
+
+            if(type==='bar') {
+                // Bar chart: user vs total bonus
+                var padL=80,padR=30,padT=30,padB=60;
+                var cW=W-padL-padR, cH=H-padT-padB;
+                var maxVal = Math.max.apply(null,data.map(function(d){return d.total;}))*1.15;
+                
+                // grid
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){ var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke(); }
+                
+                // Y labels
+                ctx.fillStyle='#86868b';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){ var y=padT+cH/5*i;var v=maxVal-maxVal/5*i;ctx.fillText('¥'+(v/1000).toFixed(1)+'k',padL-10,y+4); }
+                
+                // bars
+                var barW=Math.min(50,cW/data.length*0.6);
+                var gap=(cW-barW*data.length)/(data.length+1);
+                var colors=['#0071e3','#34c759','#ff9500','#af52de','#ff3b30'];
+                data.forEach(function(d,i){
+                    var x=padL+gap+(barW+gap)*i;
+                    var bh=cH*(d.total/maxVal);
+                    var y=padT+cH-bh;
+                    // gradient fill
+                    var grad=ctx.createLinearGradient(x,y,x,padT+cH);
+                    grad.addColorStop(0,colors[i%colors.length]);grad.addColorStop(1,colors[i%colors.length]+'40');
+                    ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,barW,bh,[4]):ctx.fillRect(x,y,barW,bh);ctx.fill();
+                    // value on top
+                    ctx.fillStyle=colors[i%colors.length];ctx.font='bold 11px -apple-system,sans-serif';ctx.textAlign='center';
+                    ctx.fillText('¥'+(d.total/1000).toFixed(1)+'k',x+barW/2,y-6);
+                    // X label
+                    ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';
+                    ctx.fillText(d.name,x+barW/2,H-padB+18);
+                });
+                
+            } else if(type==='line') {
+                // Line chart: cumulative over time (simulated)
+                var padL=70,padR=30,padT=30,padB=60;
+                var cW=W-padL-padR, cH=H-padT-padB;
+                // Simulated monthly cumulative for each user
+                var months=['1月','2月','3月','4月','5月'];
+                var cumData={
+                    user100:[2000,5000,7200,9200,9200],
+                    user101:[1500,3500,5500,6850,6850],
+                    user102:[1200,3000,4200,5400,5400],
+                    user103:[0,1200,2200,3100,3100],
+                    user104:[0,0,1500,2300,2300]
+                };
+                var allVals=[];Object.keys(cumData).forEach(function(k){cumData[k].forEach(function(v){allVals.push(v);});});
+                var maxV=Math.max.apply(null,allVals)*1.15;
+                
+                // grid
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){ var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke(); }
+                ctx.fillStyle='#86868b';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){ var y=padT+cH/5*i;ctx.fillText('¥'+(maxV-maxV/5*i)/1000+'k',padL-10,y+4); }
+                ctx.textAlign='center';
+                var stepX=months.length>1?cW/(months.length-1):0;
+                months.forEach(function(m,i){ ctx.fillText(m,padL+stepX*i,H-padB+20); });
+                
+                var lcolors=['#0071e3','#34c759','#ff9500','#af52de','#ff3b30'];
+                Object.keys(cumData).forEach(function(uid,j){
+                    ctx.strokeStyle=lcolors[j];ctx.lineWidth=2.5;ctx.beginPath();
+                    cumData[uid].forEach(function(v,i){
+                        var x=padL+stepX*i;var y=padT+cH-(v/maxV)*cH;
+                        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+                    });
+                    ctx.stroke();
+                    // dots
+                    cumData[uid].forEach(function(v,i){
+                        var x=padL+stepX*i;var y=padT+cH-(v/maxV)*cH;
+                        ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=lcolors[j];ctx.lineWidth=2;ctx.stroke();
+                    });
+                });
+                
+            } else if(type==='pie') {
+                // Pie chart: bonus share by user
+                var cx=W/2,cy=H/2-10,r=Math.min(W,H)/2.5;
+                var total=data.reduce(function(s,d){return s+d.total;},0);
+                var colors=['#0071e3','#34c759','#ff9500','#af52de','#ff3b30'];
+                var startAngle=-Math.PI/2;
+                
+                data.forEach(function(d,i){
+                    var slice=(d.total/total)*Math.PI*2;
+                    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,startAngle,startAngle+slice);ctx.closePath();
+                    ctx.fillStyle=colors[i];ctx.globalAlpha=0.85;ctx.fill();ctx.globalAlpha=1;
+                    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+                    
+                    // label line
+                    var midA=startAngle+slice/2;
+                    var lx=cx+r*Math.cos(midA)*1.35,ly=cy+r*Math.sin(midA)*1.35;
+                    var tx=cx+r*Math.cos(midA)*1.55,ty=cy+r*Math.sin(midA)*1.55;
+                    ctx.beginPath();ctx.moveTo(cx+r*Math.cos(midA)*0.85,cy+r*Math.sin(midA)*0.85);ctx.lineTo(lx,ly);ctx.lineTo(tx,ty);
+                    ctx.strokeStyle='#999';ctx.lineWidth=1;ctx.stroke();
+                    
+                    ctx.fillStyle='#1d1d1f';ctx.font='bold 12px -apple-system,sans-serif';ctx.textAlign=tx>cx?'left':'right';
+                    var pct=((d.total/total)*100).toFixed(1)+'%';
+                    ctx.fillText(d.name+' '+pct,tx,ty+(tx>cx?4:-4));
+                    
+                    startAngle+=slice;
+                });
+                
+                // center text
+                ctx.fillStyle='#1d1d1f';ctx.font='bold 16px -apple-system,sans-serif';ctx.textAlign='center';
+                ctx.fillText('总计',cx,cy-8);
+                ctx.font='14px -apple-system,sans-serif';ctx.fillStyle='#007aff';
+                ctx.fillText('¥'+(total/1000).toFixed(1)+'k',cx,cy+14);
+            }
+        }
+
+        function renderVizUserCards() {
+            var container = document.getElementById('vizUserCards');
+            if(!container) return;
+            var html='';
+            var colors=['#0071e3','#34c759','#ff9500','#af52de','#ff3b30'];
+            VIZ_USER_DATA.forEach(function(d,i){
+                html += '<div style="padding:16px;background:#fafafa;border-radius:10px;border-left:4px solid '+colors[i%colors.length]+';">';
+                html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
+                html += '<span style="font-weight:700;color:#1d1d1f;">'+d.name+'</span>';
+                html += '<span class="badge badge-'+(i===0?'success':'info')+'">'+d.level+'</span></div>';
+                html += '<div style="font-size:22px;font-weight:800;color:'+colors[i%colors.length]+';">¥'+d.total.toLocaleString()+'</div>';
+                html += '<div style="font-size:12px;color:#86868b;margin-top:6px;display:flex;gap:12px;">';
+                html += d.mapCount+张+地图 + ' | ' + d.periods+期 + ' | 最高 ¥'+d.maxSingle.toLocaleString();
+                html += '</div></div>';
+            });
+            container.innerHTML = html;
+        }
+
+        // --- 按地图可视化 ---
+        function switchVizMap(type) {
+            vizMapType = type;
+            ['Bar','Track','Scatter'].forEach(function(t){
+                var btn=document.getElementById('btnVizMap'+t);
+                if(btn){if(t.toLowerCase()===type){btn.style.background='#0071e3';btn.style.color='#fff';btn.style.fontWeight='600';}else{btn.style.background='#f5f5f7';btn.style.color='#1d1d1f';btn.style.fontWeight='normal';}}
+            });
+            drawVizMapChart(type);
+        }
+
+        function drawVizMapChart(type) {
+            var canvas = document.getElementById('vizMapChart');
+            if(!canvas) return;
+            var parent=canvas.parentElement;if(!parent||parent.offsetWidth===0)return;
+            var ctx=canvas.getContext('2d');var dpr=window.devicePixelRatio||1;
+            var rect=parent.getBoundingClientRect();
+            canvas.width=rect.width*dpr;canvas.height=360*dpr;
+            canvas.style.width=rect.width+'px';canvas.style.height='360px';
+            ctx.scale(dpr,dpr);var W=rect.width,H=360;
+            ctx.clearRect(0,0,W,H);
+
+            var data=VIZ_MAP_DATA;
+
+            if(type==='bar'){
+                var padL=90,padR=30,padT=30,padB=70;
+                var cW=W-padL-padR,cH=H-padT-padB;
+                var maxV=Math.max.apply(null,data.map(function(d){return d.bonus;}))*1.2;
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();}
+                ctx.fillStyle='#86868b';ctx.font='11px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.fillText('¥'+Math.round(maxV-maxV/5*i),padL-8,y+4);}
+                
+                var barW=Math.min(55,cW/data.length*0.6);
+                var gap=(cW-barW*data.length)/(data.length+1);
+                data.forEach(function(d,i){
+                    var x=padL+gap+(barW+gap)*i;var bh=cH*(d.bonus/maxV);var y=padT+cH-bh;
+                    var color=d.track==='enc'?'#34c759':'#007aff';
+                    var grad=ctx.createLinearGradient(x,y,x,padT+cH);grad.addColorStop(0,color);grad.addColorStop(1,color+'35');
+                    ctx.fillStyle=grad;
+                    if(ctx.roundRect)ctx.roundRect(x,y,barW,bh,[5]);else ctx.fillRect(x,y,barW,bh);ctx.fill();
+                    ctx.fillStyle=color;ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+                    ctx.fillText('¥'+d.bonus,x+barW/2,y-6);
+                    ctx.fillStyle='#1d1d1f';ctx.font='11px -apple-system,sans-serif';
+                    // truncate long names
+                    var nm=d.name.length>6?d.name.substring(0,6)+'..':d.name;
+                    ctx.fillText(nm,x+barW/2,H-padB+16);
+                    // track indicator
+                    ctx.fillStyle=color;ctx.font='9px -apple-system,sans-serif';
+                    ctx.fillText(d.track==='enc'?鼓励:非鼓励,x+barW/2,H-padB+32);
+                });
+                // legend
+                ctx.fillStyle='#34c759';ctx.fillRect(W-140,padT+8,12,12);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(鼓励赛道,W-122,padT+18);
+                ctx.fillStyle='#007aff';ctx.fillRect(W-140,padT+26,12,12);ctx.fillText(非鼓励,W-122,padT+36);
+                
+            } else if(type==='track'){
+                // Grouped bar: compare enc vs nor per metric
+                var padL=80,padR=30,padT=30,padB=60;
+                var cW=W-padL-padR,cH=H-padT-padB;
+                var encData=data.filter(function(d){return d.track==='enc';});
+                var norData=data.filter(function(d){return d.track==='nor';});
+                var metrics=[
+                    {label:地图数,enc:encData.length,nor:norData.length},
+                    {label:总游玩,enc:encData.reduce(function(s,d){return s+d.plays;},0),nor:norData.reduce(function(s,d){return s+d.plays;},0)},
+                    {label:总奖金,enc:encData.reduce(function(s,d){return s+d.bonus;},0),nor:norData.reduce(function(s,d){return s+d.bonus;},0)}
+                ];
+                var maxM=Math.max.apply(null,metrics.map(function(m){return Math.max(m.enc,m.nor);}))*1.15;
+                
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();}
+                ctx.fillStyle='#86868b';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;var v=maxM-maxM/5*i;ctx.fillText(v>=1000?(v/1000).toFixed(1)+'k':v+'',padL-8,y+4);}
+                
+                var grpW=Math.min(120,cW/metrics.length*0.7);
+                var grpGap=(cW-grpW*metrics.length)/(metrics.length+1);
+                var barW=grpW*0.35;
+                metrics.forEach(function(m,i){
+                    var gx=padL+grpGap+(grpW+grpGap)*i;
+                    // enc bar
+                    var eh=cH*(m.enc/maxM);ctx.fillStyle='#34c759';ctx.fillRect(gx,padT+cH-eh,barW,eh);
+                    // nor bar
+                    var nh=cH*(m.nor/maxM);ctx.fillStyle='#007aff';ctx.fillRect(gx+barW+4,padT+cH-nh,barW,nh);
+                    // label
+                    ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='center';
+                    ctx.fillText(m.label,gx+grpW/2,H-padB+18);
+                });
+                // legend
+                ctx.fillStyle='#34c759';ctx.fillRect(W/2-60,padT+6,14,14);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(鼓励赛道,W/2-40,padT+17);
+                ctx.fillStyle='#007aff';ctx.fillRect(W/2+20,padT+6,14,14);ctx.fillText(非鼓励,W/2+40,padT+17);
+                
+            } else if(type==='scatter'){
+                var padL=80,padR=30,padT=30,padB=60;nbsp;var cW=W-padL-padR,cH=H-padT-padB;
+                var maxX=Math.max.apply(null,data.map(function(d){return d.plays;}))*1.1;
+                var maxY=Math.max.apply(null,data.map(function(d){return d.bonus;}))*1.1;
+                
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();}
+                for(var i=0;i<=5;i++){var x=padL+cW/5*i;ctx.beginPath();ctx.moveTo(x,padT);ctx.lineTo(x,padT+cH);ctx.stroke();}
+                ctx.fillStyle='#86868b';ctx.font='11px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.fillText(Math.round(maxY-maxY/5*i),padL-8,y+4);}
+                ctx.textAlign='center';
+                for(var i=0;i<=5;i++){var x=padL+cW/5*i;ctx.fillText((maxX/5*i/1000).toFixed(0)+'k',x,H-padB+18);}
+                ctx.save();ctx.translate(padL+cW/2,H-padB+38);ctx.fillText('有效游玩人数',0,0);ctx.restore();
+                ctx.save();ctx.rotate(-Math.PI/2);ctx.fillText('奖金金额 (元)',-(padT+cH/2),16);ctx.restore();
+                
+                data.forEach(function(d,i){
+                    var sx=padL+(d.plays/maxX)*cW;
+                    var sy=padT+cH-(d.bonus/maxY)*cH;
+                    var color=d.track==='enc'?'#34c759':'#007aff';
+                    ctx.beginPath();ctx.arc(sx,sy,d.track==='enc'?10:8,0,Math.PI*2);ctx.fillStyle=color+'cc';ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+                    // label
+                    ctx.fillStyle='#1d1d1f';ctx.font='10px -apple-system,sans-serif';ctx.textAlign='center';
+                    var nm=d.id.replace('MAP','#');
+                    ctx.fillText(nm,sx,sy-14);
+                });
+            }
+        }
+
+        // --- 按计划可视化 ---
+        function switchVizPlan(type) {
+            vizPlanType=type;
+            ['Trend','Compare'].forEach(function(t){
+                var btn=document.getElementById('btnVizPlan'+t);
+                if(btn){if(t.toLowerCase()===type){btn.style.background='#0071e3';btn.style.color='#fff';btn.style.fontWeight='600';}else{btn.style.background='#f5f5f7';btn.style.color='#1d1d1f';btn.style.fontWeight='normal';}}
+            });
+            drawVizPlanChart(type);
+        }
+
+        function drawVizPlanChart(type) {
+            var canvas = document.getElementById('vizPlanChart');
+            if(!canvas) return;
+            var parent=canvas.parentElement;if(!parent||parent.offsetWidth===0)return;
+            var ctx=canvas.getContext('2d');var dpr=window.devicePixelRatio||1;
+            var rect=parent.getBoundingClientRect();
+            canvas.width=rect.width*dpr;canvas.height=320*dpr;
+            canvas.style.width=rect.width+'px';canvas.style.height='320px';
+            ctx.scale(dpr,dpr);var W=rect.width,H=320;
+            ctx.clearRect(0,0,W,H);
+
+            var data=VIZ_PLAN_DATA;
+
+            if(type==='trend'){
+                var padL=70,padR=30,padT=30,padB=55;
+                var cW=W-padL-padR,cH=H-padT-padB;
+                var labels=data.map(function(d){return d.month.replace('2026-','')+'月';});
+                var amounts=data.map(function(d){return d.amount;});
+                var mapCs=data.map(function(d){return d.maps;});
+                var userCs=data.map(function(d){return d.users;});
+                var mA=Math.max.apply(null,amounts)*1.15;
+                var mM=Math.max.apply(null,mapCs)*1.15;
+                var mU=Math.max.apply(null,userCs)*1.15;
+                
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();}
+                ctx.fillStyle='#86868b';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.fillText('¥'+((mA-mA/5*i)/1000).toFixed(0)+'k',padL-10,y+4);}
+                ctx.textAlign='center';
+                var stepX=labels.length>1?cW/(labels.length-1):0;
+                labels.forEach(function(l,i){ctx.fillText(l,padL+stepX*i,H-padB+20);});
+                
+                function drLn(vals,maxV,color,lw,dash){
+                    ctx.strokeStyle=color;ctx.lineWidth=lw||2;ctx.setLineDash(dash||[]);ctx.beginPath();
+                    vals.forEach(function(v,i){var x=padL+stepX*i;var y=padT+cH-(v/maxV)*cH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});
+                    ctx.stroke();ctx.setLineDash([]);
+                }
+                function drAr(vals,maxV,color){
+                    ctx.beginPath();vals.forEach(function(v,i){var x=padL+stepX*i;var y=padT+cH-(v/maxV)*cH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});
+                    ctx.lineTo(padL+stepX*(vals.length-1),padT+cH);ctx.lineTo(padL,padT+cH);ctx.closePath();
+                    var g=ctx.createLinearGradient(0,padT,0,padT+cH);g.addColorStop(0,color+'30');g.addColorStop(1,color+'05');ctx.fillStyle=g;ctx.fill();
+                }
+                drAr(amounts,mA,'#0071e3');drLn(amounts,mA,'#0071e3',3);
+                drLn(mapCs,mM,'#34c759',2,[6,4]);drLn(userCs,mU,'#ff9500',2,[6,4]);
+                
+                // dots
+                function drDot(vals,maxV,color){vals.forEach(function(v,i){var x=padL+stepX*i;var y=padT+cH-(v/maxV)*cH;ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();});}
+                drDot(amounts,mA,'#0071e3');drDot(mapCs,mM,'#34c759');drDot(userCs,mU,'#ff9500');
+                
+                // value labels
+                ctx.font='bold 11px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillStyle='#0071e3';
+                amounts.forEach(function(v,i){var x=padL+stepX*i;var y=padT+cH-(v/mA)*cH;ctx.fillText('¥'+(v/1000).toFixed(1)+'k',x,y-14);});
+                
+                // legend
+                var ly=H-12;var items=[{c:'#0071e3',l:发放金额},{c:'#34c759',l:地图数},{c:'#ff9500',l:人数}];
+                items.forEach(function(it,i){var x=W/2-120+i*90;ctx.strokeStyle=it.c;ctx.lineWidth=i===0?3:2;ctx.setLineDash(i>0?[4,3]:[]);ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+22,ly);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(it.l,x+28,ly+4);});
+                
+            } else if(type==='compare'){
+                // Stacked/grouped bar comparing each period
+                var padL=70,padR=30,padT=30,padB=55;
+                var cW=W-padL-padR,cH=H-padT-padB;
+                var maxA=Math.max.apply(null,data.map(function(d){return d.amount;}))*1.2;
+                
+                ctx.strokeStyle='#e5e5ea';ctx.lineWidth=1;
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();}
+                ctx.fillStyle='#86868b';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='right';
+                for(var i=0;i<=5;i++){var y=padT+cH/5*i;ctx.fillText('¥'+Math.round(maxA-maxA/5*i),padL-8,y+4);}
+                
+                var barW=Math.min(80,cW/data.length*0.55);
+                var gap=(cW-barW*data.length)/(data.length+1);
+                data.forEach(function(d,i){
+                    var x=padL+gap+(barW+gap)*i;var bh=cH*(d.amount/maxA);var y=padT+cH-bh;
+                    var color=d.status===2?'#34c759':(d.status===1?'#ff9500':'#ff3b30');
+                    var grad=ctx.createLinearGradient(x,y,x,padT+cH);grad.addColorStop(0,color);grad.addColorStop(1,color+'30');
+                    ctx.fillStyle=grad;
+                    if(ctx.roundRect)ctx.roundRect(x,y,barW,bh,[6]);else ctx.fillRect(x,y,barW,bh);ctx.fill();
+                    ctx.fillStyle=color;ctx.font='bold 11px -apple-system,sans-serif';ctx.textAlign='center';
+                    ctx.fillText('¥'+(d.amount/1000).toFixed(1)+'k',x+barW/2,y-8);
+                    // secondary info below
+                    ctx.fillStyle='#86868b';ctx.font='10px -apple-system,sans-serif';
+                    ctx.fillText(d.maps+张|'+d.users+人',x+barW/2,H-padB+16);
+                    // period label
+                    ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';
+                    ctx.fillText(d.label,x+barW/2,H-padB+32);
+                    // status badge
+                    var stxt=d.status===2?'已发放':(d.status===1?'发放中':'审核中');
+                    ctx.fillStyle=color;ctx.font='9px -apple-system,sans-serif';
+                    ctx.fillText(stxt,x+barW/2,H-padB+46);
+                });
+            }
+        }
+
+        // Auto-draw when switching to bonus tabs
+        var _origSwitchBonusView = switchBonusView;
+        switchBonusView = function(viewName, clickedEl) {
+            _origSwitchBonusView(viewName, clickedEl);
+            setTimeout(function(){
+                if(viewName==='by-user'){drawVizUserChart(vizUserType);renderVizUserCards();}
+                if(viewName==='by-map')drawVizMapChart(vizMapType);
+                if(viewName==='by-plan')drawVizPlanChart(vizPlanType);
+            },100);
+        };
+
+
+</script>
 </body>
 </html>
