@@ -3144,7 +3144,20 @@
                 .track-tag.normal { background: #fce4ec; color: #c62828; }
 
                 /* 公式配置面板 */
-                .cfg-form-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; }
+                .cfg-section { margin-bottom: 20px; border: 1px solid #e8e8ed; border-radius: 10px; overflow: hidden; }
+                .cfg-section-title { font-size: 14px; font-weight: 700; padding: 10px 16px; color: #fff; background: linear-gradient(135deg, #667eea, #764ba2); }
+                .cfg-section-title.encourage { background: linear-gradient(135deg, #43a047, #66bb6a); }
+                .cfg-section-title.normal { background: linear-gradient(135deg, #E64A19, #FF7043); }
+                .cfg-section-subtitle { font-size: 12px; color: #888; padding: 6px 16px; background: #f8f8fc; border-bottom: 1px dashed #e8e8ed; }
+                .cfg-staircase-table { margin: 10px 0; border-radius: 8px; overflow: hidden; }
+                .cfg-staircase-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+                .cfg-staircase-table th { background: #f0f0f5; color: #555; font-size: 11px; font-weight: 600; padding: 6px 4px; text-align: center; }
+                .cfg-staircase-table td { text-align: center; padding: 3px 2px; border-bottom: 1px solid #f0f0f5; }
+                .cfg-mini-input { width: 90%; border: 1px solid #ddd; border-radius: 4px; padding: 4px 6px; font-size: 13px; text-align: center; outline: none; transition: border-color 0.2s; }
+                .cfg-mini-input:focus { border-color: #667eea; box-shadow: 0 0 0 2px rgba(102,126,234,0.15); }
+                .cfg-select { border: 1px solid #ddd; border-radius: 6px; padding: 7px 10px; font-size: 13px; color: #333; outline: none; cursor: pointer; background: #fff; transition: border-color 0.2s; }
+                .cfg-select:focus { border-color: #667eea; box-shadow: 0 0 0 2px rgba(102,126,234,0.15); }
+                .cfg-form-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px dashed #eee; }
                 .cfg-form-row:last-child { border-bottom: none; }
                 .cfg-label { font-size: 13px; color: #444; flex: 1; }
                 .cfg-label sub, .cfg-label sup { font-size: 11px; color: #888; }
@@ -3336,7 +3349,7 @@
                                 <thead>
                                     <tr>
                                         <th>地图ID</th><th>地图名称</th><th>作者</th><th>赛道</th>
-                                        <th>有效用户(万)</th><th>限高后X(万)</th><th>扶持系数a</th>
+                                        <th>有效用户(人)</th><th>阶梯档位</th>
                                         <th>预期奖金(元)</th><th>状态</th>
                                     </tr>
                                 </thead>
@@ -3354,84 +3367,129 @@
                             <button class="btn-calc-config" style="padding:5px 12px;font-size:12px;" onclick="resetFormulaConfig()">重置默认</button>
                         </div>
                         <div class="calc-panel-body">
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">鼓励赛道扶持系数 <span style="color:#007aff;font-weight:600;">a₁</span></div>
-                                    <div class="cfg-desc">鼓励类玩法的基础扶持力度</div>
+
+                            <!-- ====== 一、整体规则 ====== -->
+                            <div class="cfg-section">
+                                <div class="cfg-section-title">一、整体规则</div>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">结算周期</div>
+                                        <div class="cfg-desc">当前计算的月份周期</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <select class="cfg-select" id="cfg_settlement_cycle" style="width:140px;">
+                                            <option value="2026-05">2026年5月</option>
+                                            <option value="2026-04">2026年4月</option>
+                                            <option value="2026-06">2026年6月</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_a_encourage" value="0.08" step="0.001" min="0" max="1">
-                                    <span class="cfg-unit"></span>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">预算上限</div>
+                                        <div class="cfg-desc">当月激励计划的总预算金额</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <input type="number" class="cfg-input" id="cfg_budget" value="200000" step="10000" min="0">
+                                        <span class="cfg-unit">元</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">非鼓励赛道扶持系数 <span style="color:#E64A19;font-weight:600;">a₂</span></div>
-                                    <div class="cfg-desc">非鼓励类玩法的基础扶持力度</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_a_normal" value="0.052" step="0.001" min="0" max="1">
-                                    <span class="cfg-unit"></span>
-                                </div>
-                            </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">有效用户上限 <span style="color:#333;">X<sub>max</sub></span></div>
-                                    <div class="cfg-desc">单位：万</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_x_max" value="5200" step="100" min="100">
-                                    <span class="cfg-unit">万</span>
-                                </div>
-                            </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">限高阈值比例</div>
-                                    <div class="cfg-desc">阈值 = 此值 × X<sub>max</sub>，默认0.5</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_threshold_ratio" value="0.5" step="0.05" min="0.1" max="1">
-                                    <span class="cfg-unit">倍</span>
-                                </div>
-                            </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">限高增长率 <span style="color:#333;">k</span></div>
-                                    <div class="cfg-desc">控制超过阈值后增长放缓速度</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_k" value="0.0018" step="0.0001" min="0.0001" max="0.01">
-                                    <span class="cfg-unit"></span>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">单用户奖金上限</div>
+                                        <div class="cfg-desc">单个用户在结算周期内可获得的最高奖金总额</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <input type="number" class="cfg-input" id="cfg_user_bonus_cap" value="5000" step="500" min="0">
+                                        <span class="cfg-unit">元</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">当月总预算</div>
-                                    <div class="cfg-desc">单位：元</div>
+
+                            <!-- ====== 二、激励类赛道参数 ====== -->
+                            <div class="cfg-section">
+                                <div class="cfg-section-title encourage">二、激励类赛道参数</div>
+                                <div class="cfg-section-subtitle">适用于跑酷、解谜、生存、射击竞技等鼓励赛道</div>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">单玩法最高奖金</div>
+                                        <div class="cfg-desc">激励类赛道单张地图的奖金封顶值</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <input type="number" class="cfg-input" id="cfg_enc_map_cap" value="2000" step="100" min="0">
+                                        <span class="cfg-unit">元</span>
+                                    </div>
                                 </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_budget" value="200000" step="10000" min="0">
-                                    <span class="cfg-unit">元</span>
+
+                                <div class="cfg-staircase-table">
+                                    <table>
+                                        <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th></tr></thead>
+                                        <tbody>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier1_users" value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier1_bonus" value="150" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier2_users" value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier2_bonus" value="300" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier3_users" value="2000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier3_bonus" value="600" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier4_users" value="3500" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier4_bonus" value="1200" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier5_users" value="5000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier5_bonus" value="1800" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier6_users" value="8000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_enc_tier6_bonus" value="2500" step="10" min="0"></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">开始激励的最低有效游玩人数</div>
+                                        <div class="cfg-desc">低于此人数不发放激励金</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <input type="number" class="cfg-input" id="cfg_enc_min_users" value="100" step="10" min="0">
+                                        <span class="cfg-unit">人</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">单用户可激励地图上限</div>
-                                    <div class="cfg-desc">同一作者最多激励几张地图</div>
+
+                            <!-- ====== 三、非鼓励赛道参数 ====== -->
+                            <div class="cfg-section">
+                                <div class="cfg-section-title normal">三、非鼓励赛道参数</div>
+                                <div class="cfg-section-subtitle">适用于建筑展示、休闲小游戏等非鼓励赛道</div>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">单玩法最高奖金</div>
+                                        <div class="cfg-desc">非鼓励赛道单张地图的奖金封顶值</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <input type="number" class="cfg-input" id="cfg_nor_map_cap" value="1000" step="50" min="0">
+                                        <span class="cfg-unit">元</span>
+                                    </div>
                                 </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_user_map_limit" value="10" step="1" min="1" max="50">
-                                    <span class="cfg-unit">张</span>
+
+                                <div class="cfg-staircase-table">
+                                    <table>
+                                        <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th></tr></thead>
+                                        <tbody>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier1_users" value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier1_bonus" value="80" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier2_users" value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier2_bonus" value="150" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier3_users" value="2000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier3_bonus" value="280" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier4_users" value="3500" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier4_bonus" value="450" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier5_users" value="5000" step="100" min="0"></td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier5_bonus" value="650" step="10" min="0"></td></tr>
+                                            <tr><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier6_users" value="8000" step="100" min="0"></td><td><td><input type="number" class="cfg-mini-input" id="cfg_nor_tier6_bonus" value="900" step="10" min="0"></td></tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">单图最高激励金</div>
-                                    <div class="cfg-desc">单位：元，单个地图奖金封顶</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_map_bonus_cap" value="8000" step="500" min="100">
-                                    <span class="cfg-unit">元</span>
+
+                                <div class="cfg-form-row">
+                                    <div>
+                                        <div class="cfg-label">开始激励的最低有效游玩人数</div>
+                                        <div class="cfg-desc">低于此人数不发放激励金</div>
+                                    </div>
+                                    <div class="cfg-input-wrap">
+                                        <input type="number" class="cfg-input" id="cfg_nor_min_users" value="100" step="10" min="0">
+                                        <span class="cfg-unit">人</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -3592,14 +3650,31 @@ var TRACK_NAMES = {
 
 // ========== 当前配置（可编辑） ==========
 var currentConfig = {
-    aEncourage: 0.08,
-    aNormal: 0.052,
-    xMax: 5200,       // 万
-    thresholdRatio: 0.5,
-    k: 0.0018,
-    budget: 200000,   // 元
-    userMapLimit: 10,
-    mapBonusCap: 8000
+    settlementCycle: '2026-05',
+    budget: 200000,
+    userBonusCap: 5000,
+    // 激励类赛道
+    encMapCap: 2000,
+    encMinUsers: 100,
+    encTiers: [
+        { users: 500, bonus: 150 },
+        { users: 1000, bonus: 300 },
+        { users: 2000, bonus: 600 },
+        { users: 3500, bonus: 1200 },
+        { users: 5000, bonus: 1800 },
+        { users: 8000, bonus: 2500 }
+    ],
+    // 非鼓励赛道
+    norMapCap: 1000,
+    norMinUsers: 100,
+    norTiers: [
+        { users: 500, bonus: 80 },
+        { users: 1000, bonus: 150 },
+        { users: 2000, bonus: 280 },
+        { users: 3500, bonus: 450 },
+        { users: 5000, bonus: 650 },
+        { users: 8000, bonus: 900 }
+    ]
 };
 
 // ========== 上次计算结果缓存（用于对比） ==========
@@ -3607,28 +3682,40 @@ var lastResultCache = null;
 
 // ========== 核心计算函数 ==========
 
-/** 限高处理后的有效用户数 */
-function getEffectiveX(rawX, cfg) {
-    var threshold = cfg.thresholdRatio * cfg.xMax;
-    if (rawX <= threshold) return rawX;
-    return threshold * (2 - Math.exp(-cfg.k * (rawX - threshold)));
-}
-
-/** 计算激励金 M */
-function calcBonus(rawX, isEncourage, cfg) {
-    var a = isEncourage ? cfg.aEncourage : cfg.aNormal;
-    var ex = getEffectiveX(rawX, cfg);
-    var m = Math.log(ex + 1) * Math.sqrt(a * ex) * ex * 1000;
-    // 封顶
-    if (m > cfg.mapBonusCap) m = cfg.mapBonusCap;
-    return Math.round(m * 100) / 100;
+/**
+ * 根据阶梯表计算激励金
+ * @param {number} rawX - 有效游玩人数
+ * @param {Array} tiers - 阶梯配置 [{users, bonus}]
+ * @param {number} mapCap - 单图封顶
+ * @param {number} minUsers - 最低门槛
+ * @returns {number}
+ */
+function calcStaircaseBonus(rawX, tiers, mapCap, minUsers) {
+    if (rawX < minUsers) return 0;
+    
+    // 找到rawX所在阶梯，线性插值
+    var bonus = 0;
+    for (var i = 0; i < tiers.length; i++) {
+        if (rawX >= tiers[i].users) {
+            // 如果还有下一级，做插值
+            if (i < tiers.length - 1 && rawX < tiers[i + 1].users) {
+                var t = (rawX - tiers[i].users) / (tiers[i + 1].users - tiers[i].users);
+                bonus = tiers[i].bonus + t * (tiers[i + 1].bonus - tiers[i].bonus);
+            } else {
+                bonus = tiers[i].bonus;
+            }
+        }
+    }
+    
+    // 封顶处理
+    return Math.min(Math.round(bonus), mapCap);
 }
 
 /** 执行全量计算并返回结构化结果 */
 function doFullCalculation(cfg) {
     var maps = [];
     var totalBonus = 0;
-    var totalValidUsers = 0;
+    var personBonusMap = {}; // 用于单用户上限控制
 
     // 按人聚合（取前N张）
     var userMaps = {};
@@ -3637,10 +3724,10 @@ function doFullCalculation(cfg) {
         userMaps[m.authorId].push(m);
     });
 
-    // 排序后截取每人最多N张
+    // 排序后截取每人最多10张（按有效游玩人数降序）
     Object.keys(userMaps).forEach(function(uid){
         var list = userMaps[uid].sort(function(a,b){ return b.validUsers - a.validUsers; });
-        userMaps[uid] = list.slice(0, cfg.userMapLimit);
+        userMaps[uid] = list.slice(0, 10);
     });
 
     // 计算每张地图
@@ -3652,17 +3739,30 @@ function doFullCalculation(cfg) {
     });
 
     flatMaps.forEach(function(m){
-        var bonus = calcBonus(m.validUsers, m.isEncourage, cfg);
-        var effX = getEffectiveX(m.validUsers, cfg);
-        var a = m.isEncourage ? cfg.aEncourage : cfg.aNormal;
+        var isEncourage = m.isEncourage;
+        var cap = isEncourage ? cfg.encMapCap : cfg.norMapCap;
+        var tiers = isEncourage ? cfg.encTiers : cfg.norTiers;
+        var minU = isEncourage ? cfg.encMinUsers : cfg.norMinUsers;
+        
+        var bonus = calcStaircaseBonus(m.validUsers, tiers, cap, minU);
+        
+        // 单用户上限检查
+        var uid = m.authorId;
+        personBonusMap[uid] = (personBonusMap[uid] || 0) + bonus;
+        if (personBonusMap[uid] > cfg.userBonusCap) {
+            // 超出部分截断
+            bonus = Math.max(0, cfg.userBonusCap - (personBonusMap[uid] - bonus));
+            personBonusMap[uid] = cfg.userBonusCap;
+        }
+        
         maps.push({
             id: m.id, name: m.name, author: m.author, authorId: m.authorId,
-            track: m.track, isEncourage: m.isEncourage,
-            rawValidUsers: m.validUsers, effectiveX: Math.round(effX*100)/100,
-            coeffA: a, bonus: bonus
+            track: m.track, isEncourage: isEncourage,
+            rawValidUsers: m.validUsers,
+            tierLabel: m.validUsers < minU ? '不激励' : (m.validUsers >= (tiers[tiers.length-1]?.users || 99999)) ? '最高档' : '阶梯'),
+            bonus: Math.round(bonus)
         });
         totalBonus += bonus;
-        totalValidUsers += m.validUsers;
     });
 
     // 按赛道聚合
@@ -3699,8 +3799,8 @@ function doFullCalculation(cfg) {
         summary: {
             mapCount: maps.length,
             authorCount: Object.keys(personRank).length,
-            totalBonus: Math.round(totalBonus*100)/100,
-            avgBonus: maps.length>0?Math.round(totalBonus/maps.length*100)/100:0,
+            totalBonus: Math.round(totalBonus),
+            avgBonus: maps.length>0?Math.round(totalBonus/maps.length):0,
             encBonus: Object.keys(trackStats).reduce(function(s,k){ return s + (trackStats[k].isEncourage?trackStats[k].totalBonus:0); },0),
             encRatio: totalBonus>0?Math.round(Object.keys(trackStats).reduce(function(s,k){return s+(trackStats[k].isEncourage?trackStats[k].totalBonus:0);},0)/totalBonus*1000)/10:0
         },
@@ -3722,8 +3822,7 @@ function renderMapTable(maps) {
         html += '<td>'+m.author+'</td>';
         html += '<td><span class="track-tag '+ (m.isEncourage?'encourage':'normal') +'">'+(TRACK_NAMES[m.track]||m.track)+'</span></td>';
         html += '<td>'+m.rawValidUsers+'</td>';
-        html += '<td style="color:'+ (m.effectiveX<m.rawValidUsers?'#E64A19':'#333')+'">'+m.effectiveX+'</td>';
-        html += '<td>'+m.coeffA+'</td>';
+        html += '<td><span class="badge badge-'+(m.tierLabel==='不激励'?'warn':(m.tierLabel==='最高档'?'success':'info'))+'">'+m.tierLabel+'</span></td>';
         html += '<td style="font-weight:600;color:#007aff;">¥'+m.bonus.toLocaleString()+'</td>';
         html += '<td><span class="badge badge-success">正常</span></td>';
         html += '</tr>';
@@ -3854,59 +3953,52 @@ function renderCompare(newRes, oldRes) {
 // ========== 交互方法 ==========
 
 window.readCurrentConfig = function() {
-    currentConfig.aEncourage = parseFloat(document.getElementById('cfg_a_encourage').value)||0.08;
-    currentConfig.aNormal = parseFloat(document.getElementById('cfg_a_normal').value)||0.052;
-    currentConfig.xMax = parseInt(document.getElementById('cfg_x_max').value)||5200;
-    currentConfig.thresholdRatio = parseFloat(document.getElementById('cfg_threshold_ratio').value)||0.5;
-    currentConfig.k = parseFloat(document.getElementById('cfg_k').value)||0.0018;
-    currentConfig.budget = parseInt(document.getElementById('cfg_budget').value)||200000;
-    currentConfig.userMapLimit = parseInt(document.getElementById('cfg_user_map_limit').value)||10;
-    currentConfig.mapBonusCap = parseInt(document.getElementById('cfg_map_bonus_cap').value)||8000;
-};
-
-window.runCalculate = function() {
-    // 显示loading
-    document.getElementById('calcLoadingOverlay').className = 'calc-loading-overlay show';
-
-    setTimeout(function(){
-        window.readCurrentConfig();
-
-        // 缓存旧结果
-        var oldRes = lastResultCache;
-
-        // 执行计算
-        var res = doFullCalculation(currentConfig);
-        lastResultCache = res;
-
-        // 渲染各区域
-        renderMapTable(res.maps);
-        renderTrackResults(res.trackStats);
-        renderPersonRank(res.personRank, oldRes?oldRes:null);
-        renderMapRank(res.mapRank, oldRes?oldRes:null);
-        renderStats(res.summary, oldRes?oldRes.summary:null);
-        renderCompare(res, oldRes);
-        updateSubmitBarSummary(res);
-
-        // 隐藏loading
-        document.getElementById('calcLoadingOverlay').className = 'calc-loading-overlay';
-    }, 600); // 模拟计算延迟
+    currentConfig.settlementCycle = document.getElementById('cfg_settlement_cycle').value || '2026-05';
+    currentConfig.budget = parseInt(document.getElementById('cfg_budget').value) || 200000;
+    currentConfig.userBonusCap = parseInt(document.getElementById('cfg_user_bonus_cap').value) || 5000;
+    // 激励赛道
+    currentConfig.encMapCap = parseInt(document.getElementById('cfg_enc_map_cap').value) || 2000;
+    currentConfig.encMinUsers = parseInt(document.getElementById('cfg_enc_min_users').value) || 100;
+    currentConfig.encTiers = [
+        { users: parseInt(document.getElementById('cfg_enc_tier1_users').value)||500, bonus: parseInt(document.getElementById('cfg_enc_tier1_bonus').value)||150 },
+        { users: parseInt(document.getElementById('cfg_enc_tier2_users').value)||1000, bonus: parseInt(document.getElementById('cfg_enc_tier2_bonus').value)||300 },
+        { users: parseInt(document.getElementById('cfg_enc_tier3_users').value)||2000, bonus: parseInt(document.getElementById('cfg_enc_tier3_bonus').value)||600 },
+        { users: parseInt(document.getElementById('cfg_enc_tier4_users').value)||3500, bonus: parseInt(document.getElementById('cfg_enc_tier4_bonus').value)||1200 },
+        { users: parseInt(document.getElementById('cfg_enc_tier5_users').value)||5000, bonus: parseInt(document.getElementById('cfg_enc_tier5_bonus').value)||1800 },
+        { users: parseInt(document.getElementById('cfg_enc_tier6_users').value)||8000, bonus: parseInt(document.getElementById('cfg_enc_tier6_bonus').value)||2500 }
+    ];
+    // 非鼓励赛道
+    currentConfig.norMapCap = parseInt(document.getElementById('cfg_nor_map_cap').value) || 1000;
+    currentConfig.norMinUsers = parseInt(document.getElementById('cfg_nor_min_users').value) || 100;
+    currentConfig.norTiers = [
+        { users: parseInt(document.getElementById('cfg_nor_tier1_users').value)||500, bonus: parseInt(document.getElementById('cfg_nor_tier1_bonus').value)||80 },
+        { users: parseInt(document.getElementById('cfg_nor_tier2_users').value)||1000, bonus: parseInt(document.getElementById('cfg_nor_tier2_bonus').value)||150 },
+        { users: parseInt(document.getElementById('cfg_nor_tier3_users').value)||2000, bonus: parseInt(document.getElementById('cfg_nor_tier3_bonus').value)||280 },
+        { users: parseInt(document.getElementById('cfg_nor_tier4_users').value)||3500, bonus: parseInt(document.getElementById('cfg_nor_tier4_bonus').value)||450 },
+        { users: parseInt(document.getElementById('cfg_nor_tier5_users').value)||5000, bonus: parseInt(document.getElementById('cfg_nor_tier5_bonus').value)||650 },
+        { users: parseInt(document.getElementById('cfg_nor_tier6_users').value)||8000, bonus: parseInt(document.getElementById('cfg_nor_tier6_bonus').value)||900 }
+    ];
 };
 
 window.resetFormulaConfig = function() {
-    document.getElementById('cfg_a_encourage').value = 0.08;
-    document.getElementById('cfg_a_normal').value = 0.052;
-    document.getElementById('cfg_x_max').value = 5200;
-    document.getElementById('cfg_threshold_ratio').value = 0.5;
-    document.getElementById('cfg_k').value = 0.0018;
+    document.getElementById('cfg_settlement_cycle').value = '2026-05';
     document.getElementById('cfg_budget').value = 200000;
-    document.getElementById('cfg_user_map_limit').value = 10;
-    document.getElementById('cfg_map_bonus_cap').value = 8000;
+    document.getElementById('cfg_user_bonus_cap').value = 5000;
+    // 激励赛道默认值
+    document.getElementById('cfg_enc_map_cap').value = 2000;
+    document.getElementById('cfg_enc_min_users').value = 100;
+    var encDefaults = [[500,150],[1000,300],[2000,600],[3500,1200],[5000,1800],[8000,2500]];
+    for(var i=1;i<=6;i++){ document.getElementById('cfg_enc_tier'+i+'_users').value = encDefaults[i-1][0]; document.getElementById('cfg_enc_tier'+i+'_bonus').value = encDefaults[i-1][1]; }
+    // 非鼓励赛道默认值
+    document.getElementById('cfg_nor_map_cap').value = 1000;
+    document.getElementById('cfg_nor_min_users').value = 100;
+    var norDefaults = [[500,80],[1000,150],[2000,280],[3500,450],[500,650],[8000,900]];
+    for(var i=1;i<=6;i++){ document.getElementById('cfg_nor_tier'+i+'_users').value = norDefaults[i-1][0]; document.getElementById('cfg_nor_tier'+i+'_bonus').value = norDefaults[i-1][1]; }
 };
 
 window.openFormulaConfig = function() {
-    // 滚动到右侧配置面板
     document.querySelector('.calc-main-grid .calc-panel:last-child').scrollIntoView({behavior:'smooth',block:'start'});
-    document.getElementById('cfg_a_encourage').focus();
+    document.getElementById('cfg_budget').focus();
 };
 
 window.resetCalcFilters = function() {
@@ -3960,15 +4052,22 @@ window.confirmSubmitCalc = function() {
     var summary = lastResultCache.summary;
 
     // 构建确认信息
+    var encTiersStr = cfg.encTiers.map(function(t){ return t.users+'人→¥'+t.bonus; }).join(' | ');
+    var norTiersStr = cfg.norTiers.map(function(t){ return t.users+'人→¥'+t.bonus; }).join(' | ');
+
     var msg = '即将确认流转以下计算结果，确认后当前系数与激励金明细将被保存并进入「运营待提交」状态。\n\n' +
-        '━━ 计算系数 ━━\n' +
-        '  鼓励系数 a₁: ' + cfg.aEncourage + '\n' +
-        '  非鼓励系数 a₂: ' + cfg.aNormal + '\n' +
-        '  Xmax: ' + cfg.xMax + ' 万 | 阈值比例: ' + cfg.thresholdRatio + '\n' +
-        '  增长率 k: ' + cfg.k + '\n' +
-        '  总预算: ¥' + cfg.budget.toLocaleString() + '\n' +
-        '  单用户地图上限: ' + cfg.userMapLimit + ' 张\n' +
-        '  单图奖金封顶: ¥' + cfg.mapBonusCap.toLocaleString() + '\n\n' +
+        '━━ 整体规则 ━━\n' +
+        '  结算周期: ' + cfg.settlementCycle + '\n' +
+        '  预算上限: ¥' + cfg.budget.toLocaleString() + '\n' +
+        '  单用户奖金上限: ¥' + cfg.userBonusCap.toLocaleString() + '\n\n' +
+        '━━ 激励类赛道参数 ━━\n' +
+        '  单玩法最高奖金: ¥' + cfg.encMapCap.toLocaleString() + '\n' +
+        '  激励阶梯: ' + encTiersStr + '\n' +
+        '  开始激励门槛: ' + cfg.encMinUsers + ' 人\n\n' +
+        '━━ 非鼓励赛道参数 ━━\n' +
+        '  单玩法最高奖金: ¥' + cfg.norMapCap.toLocaleString() + '\n' +
+        '  激励阶梯: ' + norTiersStr + '\n' +
+        '  开始激励门槛: ' + cfg.norMinUsers + ' 人\n\n' +
         '━━ 计算结果摘要 ━━\n' +
         '  激励地图: ' + summary.mapCount + ' 张\n' +
         '  激励作者: ' + summary.authorCount + ' 人\n' +
@@ -4000,7 +4099,7 @@ window.confirmSubmitCalc = function() {
 
         document.getElementById('submitSuccessDetail').textContent =
             summary.mapCount + '张地图 · ' + summary.authorCount + '位作者 · 总计 ¥' + Math.round(summary.totalTotalBonus||summary.totalBonus).toLocaleString() +
-            ' · 系数 a₁=' + cfg.aEncourage + ', a₂=' + cfg.aNormal;
+            ' · 周期 ' + cfg.settlementCycle;
 
         console.log('[奖金计算] 已确认流转', window._submittedCalcResult);
     }, 800);
