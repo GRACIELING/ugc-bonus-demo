@@ -1047,42 +1047,54 @@
                                 </td>
                             </tr>
                             <tr data-join-type="admin">
+                            <tr data-join-type="admin">
                                 <td>user103</td>
                                 <td>小赵</td>
-                                <td><span class="badge badge-warning">青铜</span></td>
+                                <td>Lv.1 青铜</td>
+                                <td>1,050</td>
+                                <td>3</td>
                                 <td>1</td>
-                                <td>2026-03-22</td>
-                                <td><span class="badge" style="background: #f3e5ff; color: #af52de; border: 1px solid #d4a0e8;">人工加白 ⭐</span></td>
-                                <td><span class="badge badge-success">已签约</span></td>
-                                <td><span class="badge badge-success">正常</span></td>
+                                <td style="color:#007aff;font-weight:600;">&#xa5;380</td>
+                                <td>0</td>
+                                <td>&#xa5;0</td>
+                                <td><span class="badge" style="background: #f3e5ff; color: #af52de; border: 1px solid #d4a0e8;">人工加白 &#x2B50;</span></td>
+                                <td><span class="badge badge-warning">未开通</span></td>
+                                <td><span class="badge badge-pending">待签约</span></td>
                                 <td>
-                                    <button class="btn btn-primary action-btn" onclick="addPenalty('user103')" style="background: #d32f2f; border-color: #d32f2f;">处罚</button>
-                                    <button class="btn btn-danger action-btn" onclick="removeUser('user103')">移除</button>
-                                </td>
-                            </tr>
+                                    <button class="btn btn-primary action-btn" onclick="remindContract('user103')">提醒签约</button>
                             <tr data-join-type="auto" data-penalty="true">
                                 <td>user104</td>
                                 <td>小陈</td>
-                                <td><span class="badge badge-info">白银</span></td>
-                                <td>8</td>
-                                <td>2026-03-10</td>
+                                <td>Lv.3 白银</td>
+                                <td>8,320</td>
+                                <td>12</td>
+                                <td>7</td>
+                                <td style="color:#007aff;font-weight:600;">&#xa5;5,120</td>
+                                <td>1</td>
+                                <td>&#xa5;680</td>
                                 <td><span class="badge badge-info">自动通过</span></td>
-                                <td><span class="badge badge-success">已签约</span></td>
-                                <td><span class="badge badge-penalty">处罚中 ⚠️</span></td>
+                                <td><span class="badge badge-success">已开通</span></td>
+                                <td><span class="badge badge-penalty">处罚中 &#x26A0;&#xFE0F;</span></td>
                                 <td>
                                     <button class="btn btn-primary action-btn" onclick="removePenalty('user104')" style="background: #2e7d32; border-color: #2e7d32;">解除处罚</button>
-                                    <button class="btn btn-danger action-btn" onclick="removeUser('user104')">移除</button>
-                                </td>
-                            </tr>
                             <tr data-join-type="manual_review" data-penalty="true">
                                 <td>user105</td>
                                 <td>小林</td>
-                                <td><span class="badge badge-success">黄金</span></td>
-                                <td>12</td>
-                                <td>2026-02-28</td>
+                                <td>Lv.5 黄金</td>
+                                <td>15,600</td>
+                                <td>25</td>
+                                <td>18</td>
+                                <td style="color:#007aff;font-weight:600;">&#xa5;12,800</td>
+                                <td>3</td>
+                                <td>&#xa5;2,100</td>
                                 <td><span class="badge badge-warning">人工审核通过</span></td>
-                                <td><span class="badge badge-success">已签约</span></td>
-                                <td><span class="badge badge-penalty">处罚中 ⚠️</span></td>
+                                <td><span class="badge badge-success">已开通</span></td>
+                                <td><span class="badge badge-penalty">处罚中 &#x26A0;&#xFE0F;</span></td>
+                                <td>
+                                    <button class="btn btn-primary action-btn" onclick="removePenalty('user105')" style="background: #2e7d32; border-color: #2e7d32;">解除处罚</button>
+                                    <button class="btn btn-danger action-btn" onclick="removeUser('user105')">移除</button>
+                                </td>
+                            </tr>
                                 <td>
                                     <button class="btn btn-primary action-btn" onclick="removePenalty('user105')" style="background: #2e7d32; border-color: #2e7d32;">解除处罚</button>
                                     <button class="btn btn-danger action-btn" onclick="removeUser('user105')">移除</button>
@@ -3988,46 +4000,45 @@ window.readCurrentConfig = function() {
     currentConfig.settlementCycle = document.getElementById('cfg_settlement_cycle').value || '2026-05';
     currentConfig.budget = parseInt(document.getElementById('cfg_budget').value) || 200000;
     currentConfig.userBonusCap = parseInt(document.getElementById('cfg_user_bonus_cap').value) || 5000;
-    // 激励赛道
+    // 激励赛道 - 动态读取阶梯行
     currentConfig.encMapCap = parseInt(document.getElementById('cfg_enc_map_cap').value) || 2000;
     currentConfig.encMinUsers = parseInt(document.getElementById('cfg_enc_min_users').value) || 100;
-    currentConfig.encTiers = [
-        { users: parseInt(document.getElementById('cfg_enc_tier1_users').value)||500, bonus: parseInt(document.getElementById('cfg_enc_tier1_bonus').value)||150 },
-        { users: parseInt(document.getElementById('cfg_enc_tier2_users').value)||1000, bonus: parseInt(document.getElementById('cfg_enc_tier2_bonus').value)||300 },
-        { users: parseInt(document.getElementById('cfg_enc_tier3_users').value)||2000, bonus: parseInt(document.getElementById('cfg_enc_tier3_bonus').value)||600 },
-        { users: parseInt(document.getElementById('cfg_enc_tier4_users').value)||3500, bonus: parseInt(document.getElementById('cfg_enc_tier4_bonus').value)||1200 },
-        { users: parseInt(document.getElementById('cfg_enc_tier5_users').value)||5000, bonus: parseInt(document.getElementById('cfg_enc_tier5_bonus').value)||1800 },
-        { users: parseInt(document.getElementById('cfg_enc_tier6_users').value)||8000, bonus: parseInt(document.getElementById('cfg_enc_tier6_bonus').value)||2500 }
-    ];
-    // 非鼓励赛道
+    currentConfig.encTiers = [];
+    var encRows = document.querySelectorAll('#encTierBody tr');
+    encRows.forEach(function(r){
+        var u = r.querySelector('[enc-tier-users]');
+        var b = r.querySelector('[enc-tier-bonus]');
+        if(u && b && u.value!==''){ currentConfig.encTiers.push({users:parseInt(u.value)||0, bonus:parseInt(b.value)||0}); }
+    });
+    if(currentConfig.encTiers.length===0){ currentConfig.encTiers = [{users:500,bonus:150}]; }
+    // 非鼓励赛道 - 动态读取阶梯行
     currentConfig.norMapCap = parseInt(document.getElementById('cfg_nor_map_cap').value) || 1000;
     currentConfig.norMinUsers = parseInt(document.getElementById('cfg_nor_min_users').value) || 100;
-    currentConfig.norTiers = [
-        { users: parseInt(document.getElementById('cfg_nor_tier1_users').value)||500, bonus: parseInt(document.getElementById('cfg_nor_tier1_bonus').value)||80 },
-        { users: parseInt(document.getElementById('cfg_nor_tier2_users').value)||1000, bonus: parseInt(document.getElementById('cfg_nor_tier2_bonus').value)||150 },
-        { users: parseInt(document.getElementById('cfg_nor_tier3_users').value)||2000, bonus: parseInt(document.getElementById('cfg_nor_tier3_bonus').value)||280 },
-        { users: parseInt(document.getElementById('cfg_nor_tier4_users').value)||3500, bonus: parseInt(document.getElementById('cfg_nor_tier4_bonus').value)||450 },
-        { users: parseInt(document.getElementById('cfg_nor_tier5_users').value)||5000, bonus: parseInt(document.getElementById('cfg_nor_tier5_bonus').value)||650 },
-        { users: parseInt(document.getElementById('cfg_nor_tier6_users').value)||8000, bonus: parseInt(document.getElementById('cfg_nor_tier6_bonus').value)||900 }
-    ];
+    currentConfig.norTiers = [];
+    var norRows = document.querySelectorAll('#norTierBody tr');
+    norRows.forEach(function(r){
+        var u = r.querySelector('[nor-tier-users]');
+        var b = r.querySelector('[nor-tier-bonus]');
+        if(u && b && u.value!==''){ currentConfig.norTiers.push({users:parseInt(u.value)||0, bonus:parseInt(b.value)||0}); }
+    });
+    if(currentConfig.norTiers.length===0){ currentConfig.norTiers = [{users:500,bonus:80}]; }
 };
 
 window.resetFormulaConfig = function() {
     document.getElementById('cfg_settlement_cycle').value = '2026-05';
     document.getElementById('cfg_budget').value = 200000;
     document.getElementById('cfg_user_bonus_cap').value = 5000;
-    // 激励赛道默认值
+    // 激励赛道 - 重置为默认1行
     document.getElementById('cfg_enc_map_cap').value = 2000;
     document.getElementById('cfg_enc_min_users').value = 100;
-    var encDefaults = [[500,150],[1000,300],[2000,600],[3500,1200],[5000,1800],[8000,2500]];
-    for(var i=1;i<=6;i++){ document.getElementById('cfg_enc_tier'+i+'_users').value = encDefaults[i-1][0]; document.getElementById('cfg_enc_tier'+i+'_bonus').value = encDefaults[i-1][1]; }
-    // 非鼓励赛道默认值
+    var encBody = document.getElementById('encTierBody');
+    encBody.innerHTML = '<tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
+    // 非鼓励赛道 - 重置为默认1行
     document.getElementById('cfg_nor_map_cap').value = 1000;
     document.getElementById('cfg_nor_min_users').value = 100;
-    var norDefaults = [[500,80],[1000,150],[2000,280],[3500,450],[500,650],[8000,900]];
-    for(var i=1;i<=6;i++){ document.getElementById('cfg_nor_tier'+i+'_users').value = norDefaults[i-1][0]; document.getElementById('cfg_nor_tier'+i+'_bonus').value = norDefaults[i-1][1]; }
+    var norBody = document.getElementById('norTierBody');
+    norBody.innerHTML = '<tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="80" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
 };
-
 window.openFormulaConfig = function() {
     document.querySelector('.calc-main-grid .calc-panel:last-child').scrollIntoView({behavior:'smooth',block:'start'});
     document.getElementById('cfg_budget').focus();
@@ -4040,6 +4051,36 @@ window.resetCalcFilters = function() {
     onFilterChange();
 };
 
+
+window.runCalculate = function() {
+    try {
+        window._calcScriptLoaded = true;
+        if (typeof readCurrentConfig === 'function') { readCurrentConfig(); }
+        var cfg = JSON.parse(JSON.stringify(currentConfig));
+        var result = doFullCalculation(cfg);
+        var oldCache = lastResultCache;
+        lastResultCache = result;
+        window._calcInitialized = true;
+        renderMapTable(result.maps);
+        renderTrackResults(result.trackStats);
+        renderPersonRank(result.personRank, oldCache ? oldCache.personRank : null);
+        renderMapRank(result.mapRank, oldCache ? oldCache.mapRank : null);
+        renderStats(result.summary, oldCache ? oldCache.summary : null);
+        renderCompare(result, oldCache);
+        updateSubmitBarSummary(result);
+        var btn = document.getElementById('btnRunCalc');
+        if (btn) {
+            var orig = btn.innerHTML;
+            btn.innerHTML = "\u2705 \u8ba1\u7b97\u5b8c\u6210";
+            btn.disabled = true;
+            setTimeout(function(){ btn.innerHTML = orig; btn.disabled = false; }, 1500);
+        }
+        console.log('[\u5956\u91d1\u8ba1\u7b97] \u5b8c\u6210', result.summary);
+    } catch(e) {
+        console.error('[\u5956\u91d1\u8ba1\u7b97] \u9519\u8bef:', e);
+        alert('\u8ba1\u7b97\u51fa\u9519: ' + e.message);
+    }
+};
 window.onFilterChange = function() {
     // 筛选逻辑（基于当前已计算的结果）
     if(!lastResultCache) { window.runCalculate(); return; }
@@ -4144,7 +4185,7 @@ window.exportCalcResult = function() {
     var maps = lastResultCache.maps;
     var lines = [];
     lines.push('\uFEFF'); // BOM for Excel UTF-8
-    lines.push('地图ID,地图名称,作者,作者ID,赛道,是否鼓励赛道,有效用户(万),限高后X(万),扶持系数,预期奖金(元)');
+    lines.push('地图ID,地图名称,作者,作者ID,赛道,是否鼓励赛道,有效用户(人),阶梯档位,预期奖金(元)');
     maps.forEach(function(m){
         var trackName = TRACK_NAMES[m.track] || m.track;
         lines.push([
